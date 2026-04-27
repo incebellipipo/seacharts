@@ -40,10 +40,11 @@ class ENC:
         """
         point = Point(easting, northing)
         for seabed in reversed(self.seabed.values()):
-            if any(polygon.contains(point) for polygon in seabed.geometry.geoms):
+            geoms = seabed.geometry.geoms if hasattr(seabed.geometry, 'geoms') else [seabed.geometry]
+            if any(polygon.contains(point) for polygon in geoms):
                 return seabed.depth
         return None
-    
+
     def is_coord_in_layer(self, easting: int, northing: int, layer_name: str):
         """
         Checks if a coordinate is within a specified layer.
@@ -56,10 +57,11 @@ class ENC:
         layer = self._environment.get_layer_by_name(layer_name)
         point = Point(easting, northing)
         if layer is not None:
-            if any(polygon.contains(point) for polygon in layer.geometry.geoms):
+            geoms = layer.geometry.geoms if hasattr(layer.geometry, 'geoms') else [layer.geometry]
+            if any(polygon.contains(point) for polygon in geoms):
                 return True
         return False
-    
+
     def get_param_value_at_coords(self, easting: int, northing: int, layer_name: str, param_name: str):
         param_name = param_name.upper()
         if self.is_coord_in_layer(easting, northing, layer_name):

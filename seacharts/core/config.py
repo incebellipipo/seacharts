@@ -14,7 +14,7 @@ class Config:
     """
     Class for managing Electronic Navigational Charts (ENC) configuration settings.
 
-    This class handles loading, validating, and modifying ENC settings 
+    This class handles loading, validating, and modifying ENC settings
     defined in a YAML configuration file.
     """
 
@@ -28,6 +28,7 @@ class Config:
         """
         if config_path is None:
             config_path = dcp.config
+        self._config_path = Path(config_path)
         self._schema = read_yaml_into_dict(dcp.config_schema)
         self.validator = Validator(self._schema)
         self._valid_sections = self._extract_valid_sections()
@@ -73,7 +74,7 @@ class Config:
     def validate_settings(self) -> None:
         """
         Validates the provided assigned settings against the schema.
-        :raises ValueError: If the settings are empty, schema is empty, 
+        :raises ValueError: If the settings are empty, schema is empty,
                             or validation fails.
         """
         if not self._settings:
@@ -86,7 +87,7 @@ class Config:
             raise ValueError(f"Cerberus validation Error: " f"{self.validator.errors}")
 
         self._settings.get("enc", {}).get("depths", []).sort()
-        for file_name in self._settings.get("enc", {}).get("files", []):
+        for file_name in self._settings.get("enc", {}).get("resources", []):
             files.verify_directory_exists(file_name)
 
 
@@ -96,8 +97,40 @@ class Config:
 
         :param file_name: Path to the YAML configuration file. Defaults to the path defined in 'paths'.
         """
+        self._config_path = Path(file_name)
         self._settings = read_yaml_into_dict(file_name)
+        self._resolve_relative_resource_paths()
+        dcp.configure_runtime_paths(
+            self._config_path,
+            self._settings.get("enc", {}).get("resources", []),
+        )
         self.validate_settings()
+
+    def _resolve_relative_resource_paths(self) -> None:
+        """
+        Resolves configured ENC resources relative to the config file location.
+
+        This allows paths like "../data/db" in config files stored in subfolders.
+        """
+        enc_settings = self._settings.get("enc")
+        if not isinstance(enc_settings, dict):
+            return
+
+        resources = enc_settings.get("resources", [])
+        if not isinstance(resources, list):
+            return
+
+        config_dir = self._config_path.expanduser().resolve().parent
+        resolved_resources: list[str] = []
+        for resource in resources:
+            path = Path(resource).expanduser()
+            if not path.is_absolute():
+                path = (config_dir / path).resolve()
+            else:
+                path = path.resolve()
+            resolved_resources.append(str(path))
+
+        enc_settings["resources"] = resolved_resources
 
 
 def read_yaml_into_dict(file_name: Path | str = dcp.config) -> dict:

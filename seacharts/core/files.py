@@ -14,7 +14,7 @@ def verify_directory_exists(path_string: str) -> None:
     """
     Checks if a directory exists at the given path.
 
-    If the directory does not exist, it prints a warning indicating whether the 
+    If the directory does not exist, it prints a warning indicating whether the
     path is absolute or relative.
 
     :param path_string: The path to the directory as a string.
@@ -27,7 +27,7 @@ def verify_directory_exists(path_string: str) -> None:
 
 def build_directory_structure(features: list[str], resources: list[str], parser: DataParser) -> None:
     """
-    Creates the directory structure for shapefiles and outputs based on the provided features 
+    Creates the directory structure for shapefiles and outputs based on the provided features
     and resources.
 
     :param features: A list of feature names for which directories will be created.
@@ -37,10 +37,10 @@ def build_directory_structure(features: list[str], resources: list[str], parser:
     map_dir_name = parser.get_source_root_name()
     if map_dir_name is None:
         raise ValueError("Cannot build directory structure: source root name is None.")
-    paths.shapefiles.mkdir(exist_ok=True)
+    paths.shapefiles.mkdir(parents=True, exist_ok=True)
     paths.shapefiles =  paths.shapefiles / map_dir_name
-    paths.output.mkdir(exist_ok=True)
-    paths.shapefiles.mkdir(exist_ok=True)
+    paths.output.mkdir(parents=True, exist_ok=True)
+    paths.shapefiles.mkdir(parents=True, exist_ok=True)
 
     for feature in features:
         shapefile_dir = paths.shapefiles / feature.lower()

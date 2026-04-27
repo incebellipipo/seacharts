@@ -41,7 +41,7 @@ enc:
       required: True
       type: string
 
-    # Depths are required for both S57 and FGDB 
+    # Depths are required for both S57 and FGDB
     # If not set they will be assigned default values, can be negative
     depths:
       required: False
@@ -121,6 +121,14 @@ display:
   type: dict
   schema:
     colorbar:
+      required: False
+      type: boolean
+
+    grayscale_depths:
+      required: False
+      type: boolean
+
+    binary_sea_land:
       required: False
       type: boolean
 
