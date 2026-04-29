@@ -40,7 +40,7 @@ where = ["."]
 include = ["seacharts*"]
 
 [tool.setuptools.dynamic]
-dependencies = { file = ["requirements.txt"] }
+dependencies = { file = ["requirements.no_gdal.txt"] }
 
 [tool.setuptools_scm]
 

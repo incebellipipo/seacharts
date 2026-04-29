@@ -6,13 +6,14 @@
 # pip install -e .
 # conda env update -f environment.yaml
 
-name: seacharts3.12
+name: seacharts
 channels:
   - defaults
   - conda-forge
 dependencies:
-  - python3.12
+  - python >=3.12, <3.14
   - gdal
+  - fiona
   - pip
   - pip:
-    - -r requirements.txt
+    - -r requirements.no_gdal.txt

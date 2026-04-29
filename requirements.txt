@@ -1,14 +1,4 @@
-cartopy
-cerberus
-colorama
+--requirement requirements.no_gdal.txt
+# These are platform specific dependencies that are not included in the main requirements.txt.
 fiona
-gdal # >= 3.12.4
-kiwisolver
-matplotlib
-matplotlib_scalebar
-numpy
-pyproj
-python
-requests
-shapely
-setuptools-scm
+gdal
