@@ -134,8 +134,8 @@ dmypy.json
 # Package main
 main.py
 todo.txt
-data/db/
-data/shapefiles/
+data/db/*
+data/shapefiles/*
 data/vessels.csv
 output/
 .vscode/

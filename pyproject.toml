@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=61", "setuptools-scm>=8", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "seacharts"
+description = "Electronic navigational charts (ENCs) processing & visualization"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE" }
+authors = [
+  { name = "Simon Blindheim",email = "simon.blindheim@ntnu.no" },
+  { name = "Trym Tengesdal" }
+]
+maintainers = [
+  { name = "Emir Cem Gezer", email = "me@emircem.com"}
+]
+keywords = [
+  "api",
+  "ships",
+  "sea charts",
+  "visualization",
+  "electronic navigational charts",
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.11",
+]
+dynamic = ["version", "dependencies"]
+
+[project.urls]
+Homepage = "https://github.com/simbli/seacharts"
+"Bug Tracker" = "https://github.com/simbli/seacharts/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["seacharts*"]
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+
+[tool.setuptools_scm]
+
+[tool.setuptools.package-data]
+seacharts = ["*.yaml"]

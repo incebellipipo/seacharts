@@ -14,9 +14,9 @@ from .colors import color_picker
 # noinspection PyProtectedMember
 class FeaturesManager:
     """
-    The FeaturesManager class is responsible for managing and rendering spatial features 
-    on a given display. This includes seabeds, land, shorelines, and vessels. It also 
-    provides methods for adding various geometric shapes, updating vessel positions, 
+    The FeaturesManager class is responsible for managing and rendering spatial features
+    on a given display. This includes seabeds, land, shorelines, and vessels. It also
+    provides methods for adding various geometric shapes, updating vessel positions,
     and managing the visibility of different layers.
 
     Attributes:
@@ -32,7 +32,7 @@ class FeaturesManager:
     """
     def __init__(self, display: "display.Display"):
         """
-        Initializes the FeaturesManager with a specified display object and 
+        Initializes the FeaturesManager with a specified display object and
         prepares spatial features for rendering.
 
         :param display: The display object that will be managed by this FeaturesManager.
@@ -50,8 +50,8 @@ class FeaturesManager:
 
     def _init_layers(self):
         """
-        Initializes the spatial feature layers such as seabeds, land, shore, and 
-        any extra layers from the display's environment. It also sets their 
+        Initializes the spatial feature layers such as seabeds, land, shore, and
+        any extra layers from the display's environment. It also sets their
         corresponding z-orders for rendering.
         """
         seabeds = list(self._display._environment.map.bathymetry.values())
@@ -73,7 +73,7 @@ class FeaturesManager:
             shore_z_order = z_orders[1] # Shore drawn as edges for land
             land_z_order = z_orders[0]
 
-        # creating shore 
+        # creating shore
         color = color_picker(shore.__class__.__name__)
         self._shore = self.assign_artist(shore, shore_z_order, color)
 
@@ -86,14 +86,7 @@ class FeaturesManager:
         for i, extra_layer in enumerate(self._display._environment.extra_layers.loaded_regions):
             self._extra_layers[i] = self.assign_artist(extra_layer, self._get_next_z_order(), extra_layer.color)
 
-        # creating borders of bounding box
-        center = self._display._environment.scope.extent.center
-        size = self._display._environment.scope.extent.size
-        geometry = shapes.Rectangle(
-            x=center.x, y=center.y, width=size.x / 2, heading=0, height=size.y / 2
-        ).geometry
-        color = (color_picker("black")[0], "none")
-        self.new_artist(geometry, color, z_order=self._get_next_z_order(), linewidth=3)
+        # Keep the map borderless by not drawing an extent outline rectangle.
 
     def _get_next_z_order(self) -> int:
         """
@@ -121,7 +114,7 @@ class FeaturesManager:
         :param layer: The spatial layer for which the artist is being assigned.
         :param z_order: The z-order for rendering the layer.
         :param color: The color for the layer's artist.
-        
+
         :return: The created artist for the layer.
         """
         if isinstance(layer.geometry, MultiLineString):
@@ -324,7 +317,7 @@ class FeaturesManager:
 
     def update_vessels(self):
         """
-        Updates the vessels displayed on the plot by reading ship positions 
+        Updates the vessels displayed on the plot by reading ship positions
         from a data source and replacing the existing vessel artists.
         """
         if self.show_vessels:
@@ -365,7 +358,7 @@ class FeaturesManager:
         """
         Toggles the visibility of vessel features on the display.
 
-        :param new_state: If provided, sets the visibility state; 
+        :param new_state: If provided, sets the visibility state;
                           otherwise toggles the current state.
         """
         if new_state is None:
@@ -395,7 +388,7 @@ class FeaturesManager:
         """
         Toggles the visibility of land and shore features.
 
-        :param new_state: If provided, sets the visibility state; 
+        :param new_state: If provided, sets the visibility state;
                           otherwise toggles the current state.
         """
         if new_state is None:

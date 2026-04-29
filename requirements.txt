@@ -1,0 +1,14 @@
+cartopy
+cerberus
+colorama
+fiona
+gdal # >= 3.12.4
+kiwisolver
+matplotlib
+matplotlib_scalebar
+numpy
+pyproj
+python
+requests
+shapely
+setuptools-scm

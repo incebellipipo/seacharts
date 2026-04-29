@@ -38,7 +38,7 @@ class Display:
         self._selected_weather = None
         self.weather_map = None
         self._cbar = None
-        self._settings = settings
+        # self._settings = settings
         self.crs = UTM(environment.scope.extent.utm_zone,
                        southern_hemisphere=environment.scope.extent.southern_hemisphere)
         self._bbox = self._set_bbox(environment)
@@ -556,6 +556,14 @@ class Display:
         axes1 = self.figure.add_subplot(gs[0, 0], projection=self.crs)
         x_min, y_min, x_max, y_max = self._environment.scope.extent.bbox
         axes1.set_extent((x_min, x_max, y_min, y_max), crs=self.crs)
+        axes1.set_frame_on(False)
+        axes1.patch.set_edgecolor("none")
+        axes1.patch.set_linewidth(0)
+        for spine in axes1.spines.values():
+            spine.set_visible(False)
+        outline_patch = getattr(axes1, "outline_patch", None)
+        if outline_patch is not None:
+            outline_patch.set_visible(False)
         axes2 = self.figure.add_subplot(gs[0, 1])
         cb = colorbar(axes2, self._environment.scope.depths)
         return axes1, gs, cb
@@ -721,7 +729,7 @@ class Display:
         self.time_label = ax_slider.text(0.5, 1.2, times[0], transform=ax_slider.transAxes,
                                          ha='center', va='center', fontsize=12)
         self.slider.valtext.set_text("")
-        
+
         last_value = self.slider.val
 
         def __on_slider_change(event):
@@ -749,7 +757,7 @@ class Display:
         if any(x in radio_labels for x in ["sea_current_speed", "sea_current_direction"]):
             radio_labels.append("sea_current")
         if not controls: return
-        
+
         slider_height = 0.2
         fig_height = 1 * len(radio_labels) + slider_height
         fig, (ax_slider, ax_radio) = plt.subplots(2, 1, figsize=(8, fig_height), height_ratios=[slider_height, 1])

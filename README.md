@@ -1,4 +1,5 @@
 # SeaCharts
+
 Python-based API for Electronic Navigational Charts (ENC)
 
 [![python version](https://img.shields.io/badge/python-3.11-blue)]()
@@ -53,7 +54,7 @@ Python-based API for Electronic Navigational Charts (ENC)
 - Access and manipulate standard geometric shapes such as points and polygon
   collections.
 - Visualize colorful seacharts features and vessels.
-- Integration with [PyThor](https://anaconda.org/channels/pythor_WETI_GUT/packages/pythor/overview) library allowing for weather data access and display.  
+- Integration with [PyThor](https://anaconda.org/channels/pythor_WETI_GUT/packages/pythor/overview) library allowing for weather data access and display.
 
 ## Code style
 
@@ -67,35 +68,28 @@ convention for Python code.
 ## Initial Setup
 
 1. Clone the repository:
+
 ```bash
-git clone https://github.com/simbli/seacharts
+git clone https://github.com/incebellipipo/seacharts
 ```
 
-2. Set up the Conda environment:
-   * Use the provided `conda_requirements.txt` file:
+1. Set up the Conda environment:
+   - Use the provided `environment.yaml` file:
+
    ```bash
-   conda create --name <envname> --file conda_requirements.txt
-   conda activate <envname>
+   conda env create -f environment.yaml
+   conda activate seacharts
    ```
 
-3. Set up directory structure:
-   * **Windows users**: Use the provided `setup.ps1` PowerShell script
-   * **Other platforms**: Manually create these directories:
-     * `data`
-     * `data/db`
+2. Download map data:
+   - Download the `US1GC09M` map from [here](https://www.charts.noaa.gov/ENCs/US1GC09M.zip)
+   - Extract and place the `US1GC09M` directory (found in map's ENC_ROOT directory) inside `data/db` folder
 
-4. Download map data:
-   * Download the `US1GC09M` map from [here](https://www.charts.noaa.gov/ENCs/US1GC09M.zip)
-   * Extract and place the `US1GC09M` directory (found in map's ENC_ROOT directory) inside `data/db` folder
-
-5. Test the installation:
-   * Run `test_seacharts_4_0.py`
-   * Expected result is shown below
-
-
+3. Test the installation:
+   - Run `test_seacharts_4_0.py`
+   - Expected result is shown below
 
 ![Expected output](images/test_results.svg "Expected test_seacharts_4_0.py output")
-
 
 ### Weather Module Setup (Optional)
 
@@ -109,8 +103,6 @@ conda activate -n <envname>
 # Remember to configure config.yaml file according to PyThor README
 python app.py
 ```
-
-
 
 ## Configuration Setup
 
@@ -131,7 +123,8 @@ enc:
   resources: [data_paths]      # Path to ENC data root, is currently a list but expects one argument
 ```
 
-#### Important Notes on ENC Configuration:
+#### Important Notes on ENC Configuration
+
 - `origin` and `center` are mutually exclusive - use only one
 - For `CRS`, you can use:
   - "WGS84" for **latitude/longitude coordinates** (required for `S57 maps`)
@@ -141,7 +134,7 @@ enc:
   - `LNDARE` (Land)
   - `DEPARE` (Depth Areas)
   - `COALNE` (Coastline)
-- A useful S57 layer catalogue can be found at: https://www.teledynecaris.com/s-57/frames/S57catalog.htm
+- A useful S57 layer catalogue can be found at: <https://www.teledynecaris.com/s-57/frames/S57catalog.htm>
 
 ### Weather Configuration
 
@@ -170,7 +163,8 @@ time:
   period_multiplier: Integer      # Multiplier for time period
 ```
 
-#### Time Configuration Notes:
+#### Time Configuration Notes
+
 - Valid period values:
   - "hour"
   - "day"
@@ -196,7 +190,6 @@ display:
   dpi: Integer                # Display DPI (default: 96)
 ```
 
-
 ## ENC Class for Maritime Spatial Data
 
 > **Important API Note**: All SeaCharts API functions expect coordinates in **UTM CRS** (easting and northing), regardless of the CRS set in *config.yaml*.
@@ -205,24 +198,24 @@ The ENC class provides methods for handling and visualizing maritime spatial dat
 
 ### Key Functionalities
 
-* **Initialization**
-    * The ENC object can be initialized with a path to a config.yaml file or a Config object.
+- **Initialization**
+  - The ENC object can be initialized with a path to a config.yaml file or a Config object.
 
-* **Geometric Data Access**
-    * The ENC provides attributes for accessing spatial layers:
-        * `land`: Contains land shapes.
-        * `shore`: Contains shorelines.
-        * `seabed`: Contains bathymetric (seafloor) data by depth.
+- **Geometric Data Access**
+  - The ENC provides attributes for accessing spatial layers:
+    - `land`: Contains land shapes.
+    - `shore`: Contains shorelines.
+    - `seabed`: Contains bathymetric (seafloor) data by depth.
 
-* **Coordinate and Depth Retrieval**
-    * `get_depth_at_coord(easting, northing)`: Returns the depth at a specific coordinate.
-    * `is_coord_in_layer(easting, northing, layer_name)`: Checks if a coordinate falls within a specified layer.
+- **Coordinate and Depth Retrieval**
+  - `get_depth_at_coord(easting, northing)`: Returns the depth at a specific coordinate.
+  - `is_coord_in_layer(easting, northing, layer_name)`: Checks if a coordinate falls within a specified layer.
 
-* **Visualization**
-    * `display`: Returns a Display instance to visualize marine geometric data and vessels.
+- **Visualization**
+  - `display`: Returns a Display instance to visualize marine geometric data and vessels.
 
-* **Spatial Data Update**
-    * `update()`: Parses and updates ENC data from specified resources.
+- **Spatial Data Update**
+  - `update()`: Parses and updates ENC data from specified resources.
 
 ### Example Usage
 
@@ -275,24 +268,24 @@ display.update_plot()    # Update only animated elements
 
 Weather data can be visualized using various variables:
 
-* Wind (speed and direction)
-* Waves (height, direction, period)
-* Sea currents (speed and direction)
-* Tide height
+- Wind (speed and direction)
+- Waves (height, direction, period)
+- Sea currents (speed and direction)
+- Tide height
 
 The visualization type is automatically selected based on the variable:
 
-* Scalar values: displayed as heatmaps
-* Vector values: displayed as arrow maps with direction indicators
+- Scalar values: displayed as heatmaps
+- Vector values: displayed as arrow maps with direction indicators
 
 ## Interactive Controls
 
 When `controls: True` in the config, a control panel provides:
 
-* **Time Slider**
-    * Allows navigation through different timestamps with labels for date and time.
-* **Layer Selection**
-    * Includes radio buttons to select weather variables such as wind, waves, and sea current.
+- **Time Slider**
+  - Allows navigation through different timestamps with labels for date and time.
+- **Layer Selection**
+  - Includes radio buttons to select weather variables such as wind, waves, and sea current.
 
 ## Drawing Functions
 
@@ -320,6 +313,7 @@ display.draw_line(
     marker_type=str          # Optional: point marker style
 )
 ```
+
 #### Circles
 
 ```python

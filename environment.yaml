@@ -1,0 +1,18 @@
+## Create the conda environment using this file with the command:
+# conda env create -f environment.yaml
+
+## Install the package in editable mode with the command:
+# conda activate <your-environment-name>
+# pip install -e .
+# conda env update -f environment.yaml
+
+name: seacharts3.12
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python3.12
+  - gdal
+  - pip
+  - pip:
+    - -r requirements.txt
