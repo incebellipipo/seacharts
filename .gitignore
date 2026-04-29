@@ -136,6 +136,9 @@ main.py
 todo.txt
 data/db/*
 data/shapefiles/*
+!data/**/.gitkeep
+
+
 data/vessels.csv
 output/
 .vscode/
