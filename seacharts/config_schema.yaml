@@ -155,3 +155,7 @@ display:
     controls:
       required: False
       type: boolean
+
+    scalebar:
+      required: False
+      type: boolean

@@ -48,6 +48,7 @@ class Display:
         self._colorbar_mode = False
         self._fullscreen_mode = False
         self._controls = True
+        self._scalebar = True
         self._resolution = 720
         self._dpi = 96
         self._anchor_index = self._init_anchor_index(settings)
@@ -57,7 +58,8 @@ class Display:
         self.features = FeaturesManager(self)
         self._toggle_colorbar(self._colorbar_mode)
         self._toggle_dark_mode(self._dark_mode)
-        self._add_scalebar()
+        if self._scalebar:
+            self._add_scalebar()
         self.add_control_panel(self._controls)
         self.redraw_plot()
         if self._fullscreen_mode:
@@ -515,6 +517,8 @@ class Display:
                 self._dpi = d["dpi"]
             if "controls" in d:
                 self._controls = d["controls"]
+            if "scalebar" in d:
+                self._scalebar = d["scalebar"]
 
         if self._fullscreen_mode:
             plt.rcParams["toolbar"] = "None"
